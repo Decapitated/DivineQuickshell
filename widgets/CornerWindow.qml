@@ -1,6 +1,7 @@
-pragma ComponentBehavior: Bound
 import Quickshell
 import QtQuick
+
+import "../singletons/"
 
 PanelWindow {
     id: root

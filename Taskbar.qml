@@ -2,43 +2,195 @@ import Quickshell
 import Quickshell.Widgets
 import QtQuick
 import QtQuick.Layouts
+import Qt5Compat.GraphicalEffects
+
+import "./widgets/"
+import "./singletons/"
 
 Scope {
     id: root
-    property ShellScreen screen
-    Bar {
+    required property ShellScreen screen
+    property double height: 58
+
+    enum Toggles { None, Power, DateTime }
+
+    PanelWindow {
         id: taskbar
         screen: root.screen
-        type: 1 // Bottom
+
+        color: Theme.backgroundColor
+        surfaceFormat.opaque: false
+
+        implicitHeight: root.height
+
+        property bool toggled: false
+        property int toggle: Taskbar.Toggles.None
+
+        anchors {
+            left: true
+            bottom: true
+            right: true
+        }
+
         WrapperItem {
-            leftMargin: 16
-            rightMargin: 16
+            leftMargin: 0
+            rightMargin: 8
             anchors.fill: parent
 
             RowLayout {
                 spacing: 8
 
-                CustomButton {
+                // Power Button
+                WrapperMouseArea {
                     id: powerButton
-                    text: "⏻"
-                    font.pixelSize: 16 * 1.5
 
-                    property bool toggled: false
+                    margin: 8
+                    implicitHeight: parent.height
+                    implicitWidth: implicitHeight
+
+                    hoverEnabled: true
+
+                    property bool toggled: taskbar.toggle == Taskbar.Toggles.Power && taskbar.toggled
 
                     onPressed: {
-                        toggled = !toggled
+                        if(taskbar.toggle == Taskbar.Toggles.None || taskbar.toggle == Taskbar.Toggles.Power) {
+                            taskbar.toggled = !taskbar.toggled
+                            if(taskbar.toggled) {
+                                taskbar.toggle = Taskbar.Toggles.Power;
+                            } else {
+                                taskbar.toggle = Taskbar.Toggles.None;
+                            }
+                        } else {
+                            taskbar.toggle = Taskbar.Toggles.Power;
+                        }
+                    }
+
+                    WrapperRectangle {
+                        property real iconMargin: 8
+                        leftMargin: iconMargin
+                        rightMargin: iconMargin
+                        topMargin: iconMargin - 3
+                        bottomMargin: iconMargin + 3
+                        radius: width
+                        color: {
+                            if(powerButton.containsMouse) {
+                                if(powerButton.toggled) {
+                                    return Qt.rgba(0.5, 0.5, 0.5, 0.2);
+                                } else {
+                                    return Qt.rgba(0.5, 0.5, 0.5, 0.1);
+                                }
+                            } else if(powerButton.toggled) {
+                                return "white";
+                            }
+                            return "transparent";
+                        }
+                                
+                        Behavior on color {
+                            ColorAnimation { duration: 100 }
+                        }
+
+                        Image {
+                            id: powerIcon
+                            source: './assets/icons/archlinux.svg'
+                            sourceSize.width: 64
+                            sourceSize.height: 64
+                            sourceClipRect: Qt.rect(0, 0, implicitWidth, implicitHeight)
+                            mipmap: true
+
+                            ColorOverlay {
+                                anchors.fill: powerIcon
+                                source: powerIcon
+                                color: {
+                                    if(!powerButton.toggled || powerButton.containsMouse) {
+                                        return Theme.fontColor
+                                    } else if(powerButton.toggled) {
+                                        return "black";
+                                    }
+                                }
+                                
+                                Behavior on color {
+                                    ColorAnimation { duration: 100 }
+                                }
+                            }
+                        }
                     }
                 }
+                // Date & Time
+                WrapperMouseArea {
+                    id: dateTime
 
-                ColumnLayout {
                     Layout.alignment: Qt.AlignRight
-                    spacing: 0
+                    margin: 4
+                    
+                    hoverEnabled: true
 
-                    TimeWidget {
-                        Layout.alignment: Qt.AlignRight
+                    property bool toggled: taskbar.toggle == Taskbar.Toggles.DateTime && taskbar.toggled
+
+                    onPressed: {
+                        if(taskbar.toggle == Taskbar.Toggles.None || taskbar.toggle == Taskbar.Toggles.DateTime) {
+                            taskbar.toggled = !taskbar.toggled;
+                            if(taskbar.toggled) {
+                                taskbar.toggle = Taskbar.Toggles.DateTime;
+                            } else {
+                                taskbar.toggle = Taskbar.Toggles.None;
+                            }
+                        } else {
+                            taskbar.toggle = Taskbar.Toggles.DateTime;
+                        }
                     }
-                    DateWidget {
-                        Layout.alignment: Qt.AlignRight
+
+                    WrapperRectangle {
+                        margin: 8
+                        radius: 16
+                        color: {
+                            if(dateTime.containsMouse) {
+                                if(dateTime.toggled) {
+                                    return Qt.rgba(0.5, 0.5, 0.5, 0.2);
+                                } else {
+                                    return Qt.rgba(0.5, 0.5, 0.5, 0.1);
+                                }
+                            } else if(dateTime.toggled) {
+                                return "white";
+                            }
+                            return "transparent";
+                        }
+
+                        Behavior on color {
+                            ColorAnimation { duration: 100 }
+                        }
+                    
+                        ColumnLayout {
+                            spacing: 0
+
+                            TimeWidget {
+                                Layout.alignment: Qt.AlignRight
+                                font.pixelSize: 11
+                                color: {
+                                    if(dateTime.toggled && !dateTime.containsMouse) {
+                                        return "black";
+                                    }
+                                    return Theme.fontColor;
+                                }
+
+                                Behavior on color {
+                                    ColorAnimation { duration: 100 }
+                                }
+                            }
+                            DateWidget {
+                                Layout.alignment: Qt.AlignRight
+                                font.pixelSize: 11
+                                color: {
+                                    if(dateTime.toggled && !dateTime.containsMouse) {
+                                        return "black";
+                                    }
+                                    return Theme.fontColor;
+                                }
+
+                                Behavior on color {
+                                    ColorAnimation { duration: 100 }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -53,15 +205,18 @@ Scope {
         corner: RoundCorner.CornerEnum.BottomRight
     }
     PopupWindow {
-        anchor.item: powerButton
+        // anchor.item: powerButton
+        anchor.window: taskbar
         anchor.edges: Edges.Top | Edges.Left
         anchor.gravity: Edges.Top | Edges.Right
+        anchor.rect.y: -4
 
         implicitWidth: 150
         implicitHeight: 200
         color: "transparent"
-        
+
         visible: powerButton.toggled
+        
         WrapperRectangle {
             radius: 16
             leftMargin: 16

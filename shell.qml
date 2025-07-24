@@ -4,6 +4,8 @@
 
 import Quickshell
 
+import "./widgets/"
+
 ShellRoot {
     Scope {
         Variants {
