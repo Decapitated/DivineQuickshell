@@ -1,31 +1,41 @@
 import Quickshell
 import QtQuick
 
-PanelWindow {
-    id: root
+Scope {
+    Variants {
+        id: screenVariant
+        model: Quickshell.screens
 
-    property int corner: RoundCorner.CornerEnum.TopLeft
-    property int size: 16
-    property color cornerColor: Theme.backgroundColor
+        PanelWindow {
+            id: panel
+            required property ShellScreen modelData
+            screen: modelData
 
-    // Pass-Through mouse.
-    mask: Region { item: roundCorner; intersection: Intersection.Xor }
-    exclusionMode: ExclusionMode.Normal
+            property int corner: RoundCorner.CornerEnum.TopLeft
+            property int size: 16
+            property color cornerColor: Theme.backgroundColor
 
-    color: "transparent"
-    anchors {
-        top: corner == RoundCorner.CornerEnum.TopLeft || corner == RoundCorner.CornerEnum.TopRight
-        bottom: corner == RoundCorner.CornerEnum.BottomLeft || corner == RoundCorner.CornerEnum.BottomRight
-        left: corner == RoundCorner.CornerEnum.TopLeft || corner == RoundCorner.CornerEnum.BottomLeft
-        right: corner == RoundCorner.CornerEnum.TopRight || corner == RoundCorner.CornerEnum.BottomRight
-    }
-    implicitWidth: size
-    implicitHeight: size
+            // Pass-Through mouse.
+            mask: Region { item: roundCorner; intersection: Intersection.Xor }
+            exclusionMode: ExclusionMode.Normal
 
-    RoundCorner {
-        id: roundCorner
-        color: root.cornerColor
-        size: root.size
-        corner: root.corner
+            color: "transparent"
+            anchors {
+                top: corner == RoundCorner.CornerEnum.TopLeft || corner == RoundCorner.CornerEnum.TopRight
+                bottom: corner == RoundCorner.CornerEnum.BottomLeft || corner == RoundCorner.CornerEnum.BottomRight
+                left: corner == RoundCorner.CornerEnum.TopLeft || corner == RoundCorner.CornerEnum.BottomLeft
+                right: corner == RoundCorner.CornerEnum.TopRight || corner == RoundCorner.CornerEnum.BottomRight
+            }
+            
+            implicitWidth: size
+            implicitHeight: size
+
+            RoundCorner {
+                id: roundCorner
+                color: panel.cornerColor
+                size: panel.size
+                corner: panel.corner
+            }
+        }
     }
 }

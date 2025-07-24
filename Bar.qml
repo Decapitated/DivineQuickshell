@@ -6,10 +6,9 @@ import QtQuick
 Scope {
     id: root
     
-    default property Component child: null
+    default property var child: null
     // 0 = Top; 1 = Bottom; 2 = Left; 3 = Right.
     property int type: 0
-    property int limitMonitor: -1
 
     property color color: Theme.backgroundColor
 
@@ -18,8 +17,7 @@ Scope {
 
     Variants {
         id: screenVariant
-        property list<ShellScreen> screens: Quickshell.screens
-        model: screens
+        model: Quickshell.screens
 
         PanelWindow {
             id: panel
@@ -36,36 +34,11 @@ Scope {
                 right: root.type < 2 || root.type == 3
             }
 
-            property int currentMonitor: {
-                let foundIndex = -1;
-                screenVariant.screens.find((elem, index) => {
-                    if(elem.name == modelData.name) {
-                        foundIndex = index;
-                        return true;
-                    }
-                    return false;
-                });
-                return foundIndex;
-            }
-
-            property bool canShow: {
-                console.log(root.limitMonitor < 0 || root.limitMonitor == currentMonitor);
-                return root.limitMonitor < 0 || root.limitMonitor == currentMonitor;
-            }
-            property double size: (canShow && root.child != null) ? root.maxSize + root.margin : root.margin
+            property double size: root.maxSize + root.margin
             implicitHeight: size
             implicitWidth: size
 
-            Loader {
-                active: panel.canShow
-                sourceComponent: root.child
-
-                anchors.fill: parent
-
-                onItemChanged: {
-                    console.log(item)
-                }
-            }
+            data: root.child
         }
     }
 }
