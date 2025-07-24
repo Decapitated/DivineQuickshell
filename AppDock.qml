@@ -17,6 +17,8 @@ Scope {
             property int columns: 7
             property double availableWidth: ((width - margins * 2) - (spacing * (columns - 1))) / columns
 
+            exclusionMode: ExclusionMode.Normal
+
             // WlrLayershell.layer: WlrLayer.Top
             color: "red"
             anchors {
