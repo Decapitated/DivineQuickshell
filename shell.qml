@@ -4,6 +4,7 @@
 
 import Quickshell
 
+import "./core/taskbar/"
 import "./widgets/"
 
 ShellRoot {
