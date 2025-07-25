@@ -64,7 +64,7 @@ RowLayout {
                     anchor.rect.y: -16
 
                     implicitWidth: 200
-                    implicitHeight: 200 * 0.5625 + 12 + 8
+                    implicitHeight: 200 * 0.5625 + 16 + 8
 
                     color: "transparent"
 
