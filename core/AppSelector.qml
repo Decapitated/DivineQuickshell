@@ -64,7 +64,7 @@ RowLayout {
                     anchor.edges: Edges.Top | Edges.Left
                     anchor.gravity: Edges.Top | Edges.Right
                     anchor.rect.x: -(width / 2.0) + (imageWrapper.width / 2.0)
-                    anchor.rect.y: -16
+                    anchor.rect.y: -12
 
                     implicitWidth: 200
                     implicitHeight: 200 * 0.5625 + 16 + 8
