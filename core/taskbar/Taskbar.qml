@@ -1,5 +1,6 @@
 import Quickshell
 import Quickshell.Widgets
+import Quickshell.Hyprland
 import QtQuick
 import QtQuick.Layouts
 import Qt5Compat.GraphicalEffects
@@ -33,10 +34,16 @@ Scope {
             right: true
         }
 
-        WrapperItem {
+        WrapperMouseArea {
             leftMargin: 0
             rightMargin: 8
             anchors.fill: parent
+
+            onContainsMouseChanged: {
+                if(containsMouse) {
+                    grab.active = true
+                }
+            }
 
             RowLayout {
                 spacing: 8
@@ -222,8 +229,8 @@ Scope {
         corner: RoundCorner.CornerEnum.BottomRight
     }
     PopupWindow {
-        // anchor.item: powerButton
-        anchor.window: taskbar
+        id: powerPopup
+        anchor.item: powerButton
         anchor.edges: Edges.Top | Edges.Left
         anchor.gravity: Edges.Top | Edges.Right
         anchor.rect.y: -4
@@ -233,24 +240,43 @@ Scope {
         color: "transparent"
 
         visible: powerButton.toggled
-        
-        WrapperRectangle {
-            radius: 16
-            leftMargin: 16
-            rightMargin: 16
-            topMargin: 8
-            bottomMargin: 8
+
+        WrapperMouseArea {
             anchors.fill: parent
-            color: Theme.backgroundColor
-            ColumnLayout {
-                Repeater {
-                    model: 5
-                    Text {
-                        text: "Hello!"
-                        color: Theme.fontColor
+
+            hoverEnabled: true
+
+            onContainsMouseChanged: {
+                if(containsMouse) {
+                    grab.active = true
+                }
+            }
+
+            WrapperRectangle {
+                radius: 16
+                leftMargin: 16
+                rightMargin: 16
+                topMargin: 8
+                bottomMargin: 8
+                color: Theme.backgroundColor
+                ColumnLayout {
+                    Repeater {
+                        model: 5
+                        Text {
+                            text: "Hello!"
+                            color: Theme.fontColor
+                        }
                     }
                 }
             }
+        }
+    }
+    HyprlandFocusGrab {
+        id: grab
+        windows: [ taskbar, powerPopup ]
+        onCleared: {
+            taskbar.toggled = false
+            taskbar.toggle = Taskbar.Toggles.None
         }
     }
 }
