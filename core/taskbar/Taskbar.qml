@@ -12,7 +12,7 @@ import "../../singletons/"
 Scope {
     id: root
     required property ShellScreen screen
-    property double height: 54
+    property double height: 46
 
     enum Toggles { None, Power, DateTime }
 
@@ -35,8 +35,7 @@ Scope {
         }
 
         WrapperMouseArea {
-            leftMargin: 0
-            rightMargin: 8
+            rightMargin: 16
             anchors.fill: parent
 
             onContainsMouseChanged: {
@@ -55,7 +54,7 @@ Scope {
                     WrapperMouseArea {
                         id: powerButton
                         
-                        margin: 8
+                        margin: 4
                         implicitHeight: parent.height
                         implicitWidth: height
 
@@ -143,8 +142,8 @@ Scope {
                         id: dateTime
 
                         anchors.right: parent.right
-                        margin: 4
-                        
+                        topMargin: 6
+
                         hoverEnabled: true
 
                         property bool toggled: taskbar.toggle == Taskbar.Toggles.DateTime && taskbar.toggled
@@ -163,7 +162,10 @@ Scope {
                         }
 
                         WrapperRectangle {
-                            margin: 8
+                            leftMargin: 8
+                            rightMargin: 8
+                            topMargin: 2
+                            bottomMargin: 2
                             radius: 8
                             color: {
                                 if(dateTime.containsMouse) {
