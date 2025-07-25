@@ -1,9 +1,12 @@
 pragma ComponentBehavior: Bound
+
 import Quickshell
 import Quickshell.Widgets
 import Quickshell.Wayland
 import QtQuick
 import QtQuick.Layouts
+
+import "../singletons/"
 
 RowLayout {
     spacing: 16
@@ -24,7 +27,14 @@ RowLayout {
             }
 
             Image {
+                id: appImage
                 property DesktopEntry entry: DesktopEntries.byId(imageWrapper.modelData.appId)
+                property string appName: {
+                    if(entry) {
+                        return entry.name;
+                    }
+                    return imageWrapper.modelData.appId;
+                }
                 property string iconName: {
                     if(entry) {
                         if(entry.icon.length > 0) {
@@ -54,19 +64,33 @@ RowLayout {
                     anchor.rect.y: -16
 
                     implicitWidth: 200
-                    implicitHeight: 200 * 0.5625
+                    implicitHeight: 200 * 0.5625 + 12 + 8
 
                     color: "transparent"
 
-                    ClippingWrapperRectangle {
+                    WrapperRectangle {
                         anchors.fill: parent
-                        color: "red"
+                        color: Theme.backgroundColor
                         radius: 8
+                        margin: 8
 
-                        ScreencopyView {
-                            captureSource: imageWrapper.modelData
-                            live: true
-                            constraintSize: Qt.size(implicitWidth, implicitHeight)
+                        ColumnLayout {
+                            Text {
+                                text: appImage.appName
+                                color: Theme.fontColor
+                                font.pixelSize: 12
+                            }
+                            ClippingWrapperRectangle {
+                                Layout.fillHeight: true
+                                Layout.fillWidth: true
+                                radius: 8
+                                color: "transparent"
+                                ScreencopyView {
+                                    captureSource: imageWrapper.modelData
+                                    live: true
+                                    constraintSize: Qt.size(implicitWidth, implicitHeight)
+                                }
+                            }
                         }
                     }
                 }
