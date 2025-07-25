@@ -100,4 +100,8 @@ RowLayout {
             }
         }
     }
+
+    Component.onCompleted: {
+        Cursor.cursorPos // Call this to start singleton process.
+    }
 }
