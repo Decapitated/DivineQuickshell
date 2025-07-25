@@ -3,6 +3,7 @@ pragma ComponentBehavior: Bound
 import Quickshell
 import Quickshell.Widgets
 import Quickshell.Wayland
+import Quickshell.Io
 import QtQuick
 import QtQuick.Layouts
 
@@ -23,7 +24,9 @@ RowLayout {
             implicitWidth: height
 
             onPressed: {
+                let backupPos = Cursor.cursorPos
                 modelData.activate()
+                Cursor.moveCursor(backupPos)
             }
 
             Image {
