@@ -18,7 +18,6 @@ ShellRoot {
                 Taskbar {
                     screen: screenScope.modelData
                 }
-                // AppDock {}
                 // Screen Corners
                 CornerWindow {
                     screen: screenScope.modelData
