@@ -7,7 +7,7 @@ import Quickshell.Io
 import QtQuick
 import QtQuick.Layouts
 
-import "../singletons/"
+import "../../singletons/"
 
 RowLayout {
     spacing: 16
