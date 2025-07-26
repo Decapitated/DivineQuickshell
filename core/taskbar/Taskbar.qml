@@ -51,16 +51,9 @@ Scope {
                 Item {
                     Layout.fillHeight: true
                     Layout.fillWidth: true
-                    WrapperMouseArea {
+                    PowerButton {
                         id: powerButton
-                        
-                        margin: 4
-                        implicitHeight: parent.height
-                        implicitWidth: height
-
-                        hoverEnabled: true
-
-                        property bool toggled: taskbar.toggle == Taskbar.Toggles.Power && taskbar.toggled
+                        toggled: taskbar.toggle == Taskbar.Toggles.Power && taskbar.toggled
 
                         onPressed: {
                             if(taskbar.toggle == Taskbar.Toggles.None || taskbar.toggle == Taskbar.Toggles.Power) {
@@ -72,56 +65,6 @@ Scope {
                                 }
                             } else {
                                 taskbar.toggle = Taskbar.Toggles.Power;
-                            }
-                        }
-
-                        WrapperRectangle {
-                            property real iconMargin: 8
-                            leftMargin: iconMargin
-                            rightMargin: iconMargin
-                            topMargin: iconMargin - 2.5
-                            bottomMargin: iconMargin + 2.5
-                            radius: width
-                            color: {
-                                if(powerButton.containsMouse) {
-                                    if(powerButton.toggled) {
-                                        return Qt.rgba(0.5, 0.5, 0.5, 0.2);
-                                    } else {
-                                        return Qt.rgba(0.5, 0.5, 0.5, 0.1);
-                                    }
-                                } else if(powerButton.toggled) {
-                                    return "white";
-                                }
-                                return "transparent";
-                            }
-                                    
-                            Behavior on color {
-                                ColorAnimation { duration: 100 }
-                            }
-
-                            Image {
-                                id: powerIcon
-                                source: '../../assets/icons/archlinux.svg'
-                                sourceSize.width: 64
-                                sourceSize.height: 64
-                                sourceClipRect: Qt.rect(0, 0, implicitWidth, implicitHeight)
-                                mipmap: true
-
-                                ColorOverlay {
-                                    anchors.fill: powerIcon
-                                    source: powerIcon
-                                    color: {
-                                        if(!powerButton.toggled || powerButton.containsMouse) {
-                                            return Theme.fontColor
-                                        } else if(powerButton.toggled) {
-                                            return "black";
-                                        }
-                                    }
-                                    
-                                    Behavior on color {
-                                        ColorAnimation { duration: 100 }
-                                    }
-                                }
                             }
                         }
                     }
@@ -138,15 +81,10 @@ Scope {
                     Layout.fillHeight: true
                     Layout.fillWidth: true
                     
-                    WrapperMouseArea {
-                        id: dateTime
+                    DateTimeButton {
+                        id: dateTimeButton
 
-                        anchors.right: parent.right
-                        topMargin: 6
-
-                        hoverEnabled: true
-
-                        property bool toggled: taskbar.toggle == Taskbar.Toggles.DateTime && taskbar.toggled
+                        toggled: taskbar.toggle == Taskbar.Toggles.DateTime && taskbar.toggled
 
                         onPressed: {
                             if(taskbar.toggle == Taskbar.Toggles.None || taskbar.toggle == Taskbar.Toggles.DateTime) {
@@ -161,62 +99,11 @@ Scope {
                             }
                         }
 
-                        WrapperRectangle {
-                            leftMargin: 8
-                            rightMargin: 8
-                            topMargin: 2
-                            bottomMargin: 2
-                            radius: 8
-                            color: {
-                                if(dateTime.containsMouse) {
-                                    if(dateTime.toggled) {
-                                        return Qt.rgba(0.5, 0.5, 0.5, 0.2);
-                                    } else {
-                                        return Qt.rgba(0.5, 0.5, 0.5, 0.1);
-                                    }
-                                } else if(dateTime.toggled) {
-                                    return "white";
-                                }
-                                return "transparent";
-                            }
-
-                            Behavior on color {
-                                ColorAnimation { duration: 100 }
-                            }
-                        
-                            ColumnLayout {
-                                spacing: 0
-
-                                TimeWidget {
-                                    Layout.alignment: Qt.AlignRight
-                                    font.pixelSize: 11
-                                    color: {
-                                        if(dateTime.toggled && !dateTime.containsMouse) {
-                                            return "black";
-                                        }
-                                        return Theme.fontColor;
-                                    }
-
-                                    Behavior on color {
-                                        ColorAnimation { duration: 100 }
-                                    }
-                                }
-                                DateWidget {
-                                    Layout.alignment: Qt.AlignRight
-                                    font.pixelSize: 11
-                                    color: {
-                                        if(dateTime.toggled && !dateTime.containsMouse) {
-                                            return "black";
-                                        }
-                                        return Theme.fontColor;
-                                    }
-
-                                    Behavior on color {
-                                        ColorAnimation { duration: 100 }
-                                    }
-                                }
-                            }
-                        }
+                        // onContainsMouseChanged: {
+                        //     if(containsMouse) {
+                        //         grab.active = true
+                        //     }
+                        // }
                     }
                 }
             }
@@ -230,6 +117,7 @@ Scope {
         screen: root.screen
         corner: RoundCorner.CornerEnum.BottomRight
     }
+    // Power Popup
     PopupWindow {
         id: powerPopup
         anchor.item: powerButton
@@ -273,12 +161,57 @@ Scope {
             }
         }
     }
+    // DateTime Popup
+    PopupWindow {
+        id: dateTimePopup
+        anchor.item: dateTimeButton
+        anchor.edges: Edges.Top | Edges.Right
+        anchor.gravity: Edges.Top | Edges.Right
+        anchor.rect.y: -4
+
+        implicitWidth: 150
+        implicitHeight: 200
+        color: "transparent"
+
+        visible: dateTimeButton.toggled
+
+        WrapperMouseArea {
+            anchors.fill: parent
+
+            hoverEnabled: true
+
+            onContainsMouseChanged: {
+                if(containsMouse) {
+                    grab.active = true
+                }
+            }
+
+            WrapperRectangle {
+                radius: 16
+                leftMargin: 16
+                rightMargin: 16
+                topMargin: 8
+                bottomMargin: 8
+                color: Theme.backgroundColor
+                ColumnLayout {
+                    Repeater {
+                        model: 5
+                        Text {
+                            text: "Hello!"
+                            color: Theme.fontColor
+                        }
+                    }
+                }
+            }
+        }
+    }
     HyprlandFocusGrab {
         id: grab
-        windows: [ taskbar, powerPopup ]
+        windows: [ taskbar, powerPopup, dateTimePopup ]
         onCleared: {
             taskbar.toggled = false
             taskbar.toggle = Taskbar.Toggles.None
+            console.log("Cleared")
         }
     }
 }
