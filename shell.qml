@@ -18,6 +18,15 @@ ShellRoot {
                 Taskbar {
                     screen: screenScope.modelData
                 }
+                // Test Window
+                // PanelWindow {
+                //     WlrLayershell.layer: WlrLayer.Bottom
+                //     anchors.left: true
+                //     anchors.right: true
+                //     anchors.top: true
+                //     anchors.bottom: true
+                //     color: "transparent"
+                // }
                 // Screen Corners
                 CornerWindow {
                     screen: screenScope.modelData

@@ -44,65 +44,86 @@ Scope {
             }
 
             RowLayout {
-                spacing: 8
+                spacing: 0
+                uniformCellSizes: true
 
-                // Power Button
-                Item {
+                // Left
+                WrapperRectangle {
                     Layout.fillHeight: true
-                    Layout.fillWidth: true
-                    PowerButton {
-                        id: powerButton
-                        toggled: taskbar.toggle == Taskbar.Toggles.Power && taskbar.toggled
+                    Layout.alignment: Qt.AlignLeft
+                    color: "red"
+                    RowLayout {
+                        spacing: 0
+                        // Power Button
+                        PowerButton {
+                            id: powerButton
 
-                        onPressed: {
-                            if(taskbar.toggle == Taskbar.Toggles.None || taskbar.toggle == Taskbar.Toggles.Power) {
-                                taskbar.toggled = !taskbar.toggled
-                                if(taskbar.toggled) {
-                                    taskbar.toggle = Taskbar.Toggles.Power;
+                            toggled: taskbar.toggle == Taskbar.Toggles.Power && taskbar.toggled
+
+                            onPressed: {
+                                if(taskbar.toggle == Taskbar.Toggles.None || taskbar.toggle == Taskbar.Toggles.Power) {
+                                    taskbar.toggled = !taskbar.toggled
+                                    if(taskbar.toggled) {
+                                        taskbar.toggle = Taskbar.Toggles.Power;
+                                    } else {
+                                        taskbar.toggle = Taskbar.Toggles.None;
+                                    }
                                 } else {
-                                    taskbar.toggle = Taskbar.Toggles.None;
+                                    taskbar.toggle = Taskbar.Toggles.Power;
                                 }
-                            } else {
-                                taskbar.toggle = Taskbar.Toggles.Power;
                             }
                         }
                     }
                 }
-                // App Selector
-                WrapperItem {
+                // Middle
+                WrapperRectangle {
+                    Layout.fillHeight: true
                     Layout.alignment: Qt.AlignCenter
-                    Layout.fillHeight: true
-                    margin: 8
-                    AppSelector {}
+
+                    color: "green"
+                    RowLayout {
+                        // App Selector
+                        WrapperItem {
+                            Layout.fillHeight: true
+                            margin: 8
+                            AppSelector {}
+                        }
+                    }
                 }
-                // Date & Time
-                Item {
+                // Right
+                WrapperRectangle {
                     Layout.fillHeight: true
-                    Layout.fillWidth: true
-                    
-                    DateTimeButton {
-                        id: dateTimeButton
+                    Layout.alignment: Qt.AlignRight
 
-                        toggled: taskbar.toggle == Taskbar.Toggles.DateTime && taskbar.toggled
+                    color: "blue"
+                    RowLayout {
+                        spacing: 8
+                        // System Tray
+                        WrapperItem {
+                            Layout.fillHeight: true
+                            margin: 8
 
-                        onPressed: {
-                            if(taskbar.toggle == Taskbar.Toggles.None || taskbar.toggle == Taskbar.Toggles.DateTime) {
-                                taskbar.toggled = !taskbar.toggled;
-                                if(taskbar.toggled) {
-                                    taskbar.toggle = Taskbar.Toggles.DateTime;
+                            SystemTray {}
+                        }
+                        // Date & Time
+                        DateTimeButton {
+                            id: dateTimeButton
+
+                            toggled: taskbar.toggle == Taskbar.Toggles.DateTime && taskbar.toggled
+
+                            onPressed: {
+                                if(taskbar.toggle == Taskbar.Toggles.None || taskbar.toggle == Taskbar.Toggles.DateTime) {
+                                    taskbar.toggled = !taskbar.toggled;
+                                    if(taskbar.toggled) {
+                                        taskbar.toggle = Taskbar.Toggles.DateTime;
+                                    } else {
+                                        taskbar.toggle = Taskbar.Toggles.None;
+                                    }
                                 } else {
-                                    taskbar.toggle = Taskbar.Toggles.None;
+                                    taskbar.toggle = Taskbar.Toggles.DateTime;
                                 }
-                            } else {
-                                taskbar.toggle = Taskbar.Toggles.DateTime;
                             }
                         }
-
-                        // onContainsMouseChanged: {
-                        //     if(containsMouse) {
-                        //         grab.active = true
-                        //     }
-                        // }
                     }
                 }
             }
