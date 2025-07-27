@@ -11,9 +11,6 @@ WrapperMouseArea {
 
     property bool toggled: false
 
-    anchors.right: parent.right
-    topMargin: 6
-
     hoverEnabled: true
 
     WrapperRectangle {
