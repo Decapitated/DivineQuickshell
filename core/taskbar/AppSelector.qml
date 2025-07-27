@@ -58,16 +58,21 @@ RowLayout {
                     PropertyAnimation { duration: 100 }
                 }
 
-                PopupWindow {
+                LazyLoader {
+                    active: imageWrapper.containsMouse
+                    component: AppView {}
+                }
+    
+                component AppView: PopupWindow {
                     anchor.item: imageWrapper
-                    visible: imageWrapper.containsMouse
+                    visible: true
                     anchor.edges: Edges.Top | Edges.Left
                     anchor.gravity: Edges.Top | Edges.Right
                     anchor.rect.x: -(width / 2.0) + (imageWrapper.width / 2.0)
                     anchor.rect.y: -12
 
                     implicitWidth: 200
-                    implicitHeight: 200 * 0.5625 + 16 + 8
+                    implicitHeight: 200 * 0.5625 + 16 + 16
 
                     color: "transparent"
 
@@ -78,14 +83,44 @@ RowLayout {
                         margin: 8
 
                         ColumnLayout {
-                            Text {
-                                text: appImage.appName
-                                color: Theme.fontColor
-                                font.pixelSize: 12
+                            clip: true
+                            spacing: 0
+
+                            Flickable {
+                                id: titleFlickable
+                                Layout.fillWidth: true
+                                Layout.fillHeight: true
+
+                                contentWidth: contentItem.childrenRect.width
+                                contentHeight: contentItem.childrenRect.height
+
+                                property int endX: contentWidth - width
+
+                                Text {
+                                    text: imageWrapper.modelData.title // appImage.appName
+                                    color: Theme.fontColor
+                                    font.pixelSize: 12
+                                }
+
+                                Behavior on contentX {
+                                    NumberAnimation { duration: 500 }
+                                }
+
+                                Timer {
+                                    interval: 2000; running: true; repeat: true
+                                    onTriggered: {
+                                        if(titleFlickable.contentX == titleFlickable.endX) {
+                                            titleFlickable.contentX = 0
+                                        } else {
+                                            titleFlickable.contentX = titleFlickable.endX
+                                        }
+                                    }
+                                }
                             }
                             ClippingWrapperRectangle {
-                                Layout.fillHeight: true
                                 Layout.fillWidth: true
+                                Layout.alignment: Qt.AlignBottom
+                                implicitHeight: width * 0.5625
                                 radius: 8
                                 color: "transparent"
                                 ScreencopyView {
