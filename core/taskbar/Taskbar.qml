@@ -72,6 +72,12 @@ Scope {
                                     taskbar.toggle = Taskbar.Toggles.Power;
                                 }
                             }
+
+                            onContainsMouseChanged: {
+                                if(containsMouse) {
+                                    grab.active = true
+                                }
+                            }
                         }
                     }
                 }
@@ -122,6 +128,12 @@ Scope {
                                     }
                                 } else {
                                     taskbar.toggle = Taskbar.Toggles.DateTime;
+                                }
+                            }
+
+                            onContainsMouseChanged: {
+                                if(containsMouse) {
+                                    grab.active = true
                                 }
                             }
                         }
