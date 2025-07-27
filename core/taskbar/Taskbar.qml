@@ -51,7 +51,9 @@ Scope {
                 WrapperRectangle {
                     Layout.fillHeight: true
                     Layout.alignment: Qt.AlignLeft
-                    color: "red"
+
+                    color: "transparent"
+
                     RowLayout {
                         spacing: 0
                         // Power Button
@@ -86,7 +88,8 @@ Scope {
                     Layout.fillHeight: true
                     Layout.alignment: Qt.AlignCenter
 
-                    color: "green"
+                    color: "transparent"
+
                     RowLayout {
                         // App Selector
                         WrapperItem {
@@ -101,7 +104,8 @@ Scope {
                     Layout.fillHeight: true
                     Layout.alignment: Qt.AlignRight
 
-                    color: "blue"
+                    color: "transparent"
+                    
                     RowLayout {
                         spacing: 8
                         // System Tray
