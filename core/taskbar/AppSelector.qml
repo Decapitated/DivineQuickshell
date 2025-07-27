@@ -96,6 +96,7 @@ RowLayout {
 
                                 property int endX: contentWidth - width
 
+
                                 Text {
                                     text: imageWrapper.modelData.title // appImage.appName
                                     color: Theme.fontColor
@@ -103,16 +104,27 @@ RowLayout {
                                 }
 
                                 Behavior on contentX {
-                                    NumberAnimation { duration: 500 }
+                                    SequentialAnimation {
+                                        NumberAnimation { duration: 2000 }
+                                        ScriptAction {
+                                            script: {
+                                                scrollTimer.running = true;
+                                            }
+                                        }
+                                    }
                                 }
 
                                 Timer {
-                                    interval: 2000; running: true; repeat: true
+                                    id: scrollTimer
+                                    running: true
+                                    interval: 3000
                                     onTriggered: {
-                                        if(titleFlickable.contentX == titleFlickable.endX) {
-                                            titleFlickable.contentX = 0
-                                        } else {
-                                            titleFlickable.contentX = titleFlickable.endX
+                                        if(titleFlickable.contentWidth > titleFlickable.width) {
+                                            if(titleFlickable.contentX == titleFlickable.endX) {
+                                                titleFlickable.contentX = 0;
+                                            } else {
+                                                titleFlickable.contentX = titleFlickable.endX;
+                                            }
                                         }
                                     }
                                 }
