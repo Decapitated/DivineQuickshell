@@ -5,8 +5,9 @@ import QtQuick
 import QtQuick.Layouts
 import Qt5Compat.GraphicalEffects
 
-import "../../widgets/"
-import "../../singletons/"
+import "./taskbar/"
+import "../widgets/"
+import "../singletons/"
 
 Scope {
     id: root

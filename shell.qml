@@ -5,8 +5,6 @@
 import Quickshell
 
 import "./core/"
-import "./core/taskbar/"
-import "./widgets/"
 
 ShellRoot {
     Scope {
