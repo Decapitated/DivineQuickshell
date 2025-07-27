@@ -1,8 +1,7 @@
 import Quickshell.Widgets
 import QtQuick
-import Qt5Compat.GraphicalEffects
 
-import "../../singletons/"
+import "../singletons/"
 
 WrapperMouseArea {
     id: root
@@ -24,7 +23,7 @@ WrapperMouseArea {
                     return Qt.rgba(0.5, 0.5, 0.5, 0.1);
                 }
             } else if(root.toggled) {
-                return "white";
+                return Theme.fontColor;
             }
             return "transparent";
         }
