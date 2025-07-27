@@ -113,27 +113,33 @@ Scope {
                             SystemTray {}
                         }
                         // Date & Time
-                        DateTimeButton {
-                            id: dateTimeButton
+                        WrapperItem {
+                            Layout.fillHeight: true
+                            topMargin: 4
+                            bottomMargin: 4
 
-                            toggled: taskbar.toggle == Taskbar.Toggles.DateTime && taskbar.toggled
+                            DateTimeButton {
+                                id: dateTimeButton
 
-                            onPressed: {
-                                if(taskbar.toggle == Taskbar.Toggles.None || taskbar.toggle == Taskbar.Toggles.DateTime) {
-                                    taskbar.toggled = !taskbar.toggled;
-                                    if(taskbar.toggled) {
-                                        taskbar.toggle = Taskbar.Toggles.DateTime;
+                                toggled: taskbar.toggle == Taskbar.Toggles.DateTime && taskbar.toggled
+
+                                onPressed: {
+                                    if(taskbar.toggle == Taskbar.Toggles.None || taskbar.toggle == Taskbar.Toggles.DateTime) {
+                                        taskbar.toggled = !taskbar.toggled;
+                                        if(taskbar.toggled) {
+                                            taskbar.toggle = Taskbar.Toggles.DateTime;
+                                        } else {
+                                            taskbar.toggle = Taskbar.Toggles.None;
+                                        }
                                     } else {
-                                        taskbar.toggle = Taskbar.Toggles.None;
+                                        taskbar.toggle = Taskbar.Toggles.DateTime;
                                     }
-                                } else {
-                                    taskbar.toggle = Taskbar.Toggles.DateTime;
                                 }
-                            }
 
-                            onContainsMouseChanged: {
-                                if(containsMouse) {
-                                    grab.active = true
+                                onContainsMouseChanged: {
+                                    if(containsMouse) {
+                                        grab.active = true
+                                    }
                                 }
                             }
                         }
@@ -200,7 +206,7 @@ Scope {
         anchor.item: dateTimeButton
         anchor.edges: Edges.Top | Edges.Right
         anchor.gravity: Edges.Top | Edges.Right
-        anchor.rect.y: -4
+        anchor.rect.y: -9
 
         implicitWidth: 150
         implicitHeight: 200
