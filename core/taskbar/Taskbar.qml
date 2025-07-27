@@ -61,7 +61,7 @@ Scope {
                             Layout.fillHeight: true
                             implicitWidth: height
                             margin: 4
-                            
+
                             PowerButton {
                                 id: powerButton
 
@@ -172,7 +172,7 @@ Scope {
         anchor.item: powerButton
         anchor.edges: Edges.Top | Edges.Left
         anchor.gravity: Edges.Top | Edges.Right
-        anchor.rect.y: -4
+        anchor.rect.y: -8
 
         implicitWidth: 150
         implicitHeight: 200
