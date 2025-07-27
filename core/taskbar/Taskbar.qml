@@ -57,27 +57,33 @@ Scope {
                     RowLayout {
                         spacing: 0
                         // Power Button
-                        PowerButton {
-                            id: powerButton
+                        WrapperItem {
+                            Layout.fillHeight: true
+                            implicitWidth: height
+                            margin: 4
+                            
+                            PowerButton {
+                                id: powerButton
 
-                            toggled: taskbar.toggle == Taskbar.Toggles.Power && taskbar.toggled
+                                toggled: taskbar.toggle == Taskbar.Toggles.Power && taskbar.toggled
 
-                            onPressed: {
-                                if(taskbar.toggle == Taskbar.Toggles.None || taskbar.toggle == Taskbar.Toggles.Power) {
-                                    taskbar.toggled = !taskbar.toggled
-                                    if(taskbar.toggled) {
-                                        taskbar.toggle = Taskbar.Toggles.Power;
+                                onPressed: {
+                                    if(taskbar.toggle == Taskbar.Toggles.None || taskbar.toggle == Taskbar.Toggles.Power) {
+                                        taskbar.toggled = !taskbar.toggled
+                                        if(taskbar.toggled) {
+                                            taskbar.toggle = Taskbar.Toggles.Power;
+                                        } else {
+                                            taskbar.toggle = Taskbar.Toggles.None;
+                                        }
                                     } else {
-                                        taskbar.toggle = Taskbar.Toggles.None;
+                                        taskbar.toggle = Taskbar.Toggles.Power;
                                     }
-                                } else {
-                                    taskbar.toggle = Taskbar.Toggles.Power;
                                 }
-                            }
 
-                            onContainsMouseChanged: {
-                                if(containsMouse) {
-                                    grab.active = true
+                                onContainsMouseChanged: {
+                                    if(containsMouse) {
+                                        grab.active = true
+                                    }
                                 }
                             }
                         }
@@ -105,7 +111,7 @@ Scope {
                     Layout.alignment: Qt.AlignRight
 
                     color: "transparent"
-                    
+
                     RowLayout {
                         spacing: 8
                         // System Tray
@@ -187,17 +193,38 @@ Scope {
 
             WrapperRectangle {
                 radius: 16
-                leftMargin: 16
-                rightMargin: 16
-                topMargin: 8
-                bottomMargin: 8
+                margin: 8
                 color: Theme.backgroundColor
+
                 ColumnLayout {
-                    Repeater {
-                        model: 5
-                        Text {
-                            text: "Hello!"
-                            color: Theme.fontColor
+                    WrapperMouseArea {
+                        property bool toggled: false
+                        Layout.fillWidth: true
+                        
+                        WrapperRectangle {
+                            margin: 8
+                            radius: 8
+                            color: {
+                                if(root.containsMouse) {
+                                    if(root.toggled) {
+                                        return Qt.rgba(0.5, 0.5, 0.5, 0.2);
+                                    } else {
+                                        return Qt.rgba(0.5, 0.5, 0.5, 0.1);
+                                    }
+                                } else if(root.toggled) {
+                                    return "white";
+                                }
+                                return "transparent";
+                            }
+                                    
+                            Behavior on color {
+                                ColorAnimation { duration: 100 }
+                            }
+
+                            Text {
+                                text: "Restart"
+                                color: Theme.fontColor
+                            }
                         }
                     }
                 }
