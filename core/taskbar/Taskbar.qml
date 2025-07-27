@@ -101,7 +101,8 @@ Scope {
                         // System Tray
                         WrapperItem {
                             Layout.fillHeight: true
-                            margin: 8
+                            topMargin: 16
+                            bottomMargin: 16
 
                             SystemTray {}
                         }
