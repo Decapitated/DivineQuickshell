@@ -4,6 +4,7 @@
 
 import Quickshell
 
+import "./core/"
 import "./core/taskbar/"
 import "./widgets/"
 
@@ -28,30 +29,7 @@ ShellRoot {
                 //     color: "transparent"
                 // }
                 // Screen Corners
-                CornerWindow {
-                    screen: screenScope.modelData
-                    corner: RoundCorner.CornerEnum.TopLeft
-                    cornerColor: "black"
-                    exclusionMode: ExclusionMode.Ignore
-                }
-                CornerWindow {
-                    screen: screenScope.modelData
-                    corner: RoundCorner.CornerEnum.TopRight
-                    cornerColor: "black"
-                    exclusionMode: ExclusionMode.Ignore
-                }
-                CornerWindow {
-                    screen: screenScope.modelData
-                    corner: RoundCorner.CornerEnum.BottomLeft
-                    cornerColor: "black"
-                    exclusionMode: ExclusionMode.Ignore
-                }
-                CornerWindow {
-                    screen: screenScope.modelData
-                    corner: RoundCorner.CornerEnum.BottomRight
-                    cornerColor: "black"
-                    exclusionMode: ExclusionMode.Ignore
-                }
+                ScreenCorners {}
             }
         }
     }
