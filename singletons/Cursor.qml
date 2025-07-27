@@ -21,17 +21,16 @@ Singleton {
 
         stdout: StdioCollector {
             onStreamFinished: {
-                var split = this.text.split(", ")
-                let x = parseInt(split[0])
-                let y = parseInt(split[1])
-                root.cursorPos.width = x;
-                root.cursorPos.height = y;
+                var split = this.text.split(", ");
+                let x = parseInt(split[0]);
+                let y = parseInt(split[1]);
+                root.cursorPos = Qt.size(x, y);
             }
         }
     }
 
     Timer {
-        interval: 100
+        interval: 50
         running: true
         repeat: true
         onTriggered: cursorposProc.running = true
