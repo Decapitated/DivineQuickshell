@@ -27,7 +27,6 @@ RowLayout {
             }
 
             WorkspaceFolder {
-                color: "red"
                 workspace: folderWrapper.modelData
             }
         }

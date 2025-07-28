@@ -13,14 +13,14 @@ WrapperRectangle {
     id: root
     color: "transparent"
     radius: width
-    margin: 2
+    margin: 0
 
     required property HyprlandWorkspace workspace
 
     GridLayout {
         columns: 2
-        rowSpacing: 0
-        columnSpacing: 0
+        rowSpacing: 2
+        columnSpacing: 2
 
         Repeater {
             id: repeater
