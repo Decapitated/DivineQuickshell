@@ -28,6 +28,12 @@ RowLayout {
 
             WorkspaceFolder {
                 workspace: folderWrapper.modelData
+
+                scale: (folderWrapper.containsMouse) ? 1.25 : 1.0
+
+                Behavior on scale {
+                    PropertyAnimation { duration: 100 }
+                }
             }
         }
     }
