@@ -1,5 +1,6 @@
 pragma ComponentBehavior: Bound
 
+import Quickshell
 import Quickshell.Widgets
 import Quickshell.Hyprland
 import QtQuick
@@ -17,6 +18,8 @@ RowLayout {
             id: folderWrapper
             required property HyprlandWorkspace modelData
 
+            property double aspect: modelData.monitor.height / modelData.monitor.width
+
             hoverEnabled: true
 
             Layout.fillHeight: true
@@ -27,12 +30,39 @@ RowLayout {
             }
 
             WorkspaceFolder {
+                id: folder
                 workspace: folderWrapper.modelData
 
                 scale: (folderWrapper.containsMouse) ? 1.15 : 1.0
 
                 Behavior on scale {
                     PropertyAnimation { duration: 100 }
+                }
+            }
+
+            LazyLoader {
+                active: folderWrapper.containsMouse
+                component: WorkspacePopup {}
+            }
+
+            component WorkspacePopup: PopupWindow {
+                visible: true
+                anchor.item: folder
+                anchor.edges: Edges.Top | Edges.Left
+                anchor.gravity: Edges.Top | Edges.Right
+                anchor.rect.x: -(width / 2.0) + (folderWrapper.width / 2.0)
+                anchor.rect.y: -12
+
+                implicitWidth: 200
+                implicitHeight: implicitWidth * folderWrapper.aspect
+
+                WrapperRectangle {
+                    anchors.fill: parent
+                    color: "red"
+                    
+                    WorkspaceView {
+                        workspace: folderWrapper.modelData
+                    }
                 }
             }
         }

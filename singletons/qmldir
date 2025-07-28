@@ -3,3 +3,4 @@ module Singletons
 singleton GlobalState 1.0 GlobalState.qml
 singleton Theme 1.0 Theme.qml
 singleton Time 1.0 Time.qml
+singleton Clients 1.0 Clients.qml

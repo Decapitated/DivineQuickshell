@@ -31,7 +31,7 @@ WrapperRectangle {
                 required property HyprlandToplevel modelData
 
                 Layout.fillWidth: true
-                implicitHeight: width
+                implicitHeight: implicitWidth
                 margin: 0
 
                 AppImage {
