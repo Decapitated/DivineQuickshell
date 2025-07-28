@@ -47,21 +47,25 @@ RowLayout {
 
             component WorkspacePopup: PopupWindow {
                 visible: true
+                color: "transparent"
                 anchor.item: folder
                 anchor.edges: Edges.Top | Edges.Left
                 anchor.gravity: Edges.Top | Edges.Right
                 anchor.rect.x: -(width / 2.0) + (folderWrapper.width / 2.0)
                 anchor.rect.y: -12
 
-                implicitWidth: 200
+                implicitWidth: 250
                 implicitHeight: implicitWidth * folderWrapper.aspect
 
                 WrapperRectangle {
                     anchors.fill: parent
-                    color: "red"
+                    color: Theme.backgroundColor
+                    radius: 4
+                    margin: 1
                     
                     WorkspaceView {
                         workspace: folderWrapper.modelData
+                        radius: 4
                     }
                 }
             }

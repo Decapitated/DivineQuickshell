@@ -12,13 +12,15 @@ Item {
     id: root
     property HyprlandWorkspace workspace
 
+    property double radius
+
     Repeater {
         model: root.workspace.toplevels.values.filter((toplevel) => toplevel.toplevel == null)
         
-        WrapperItem {
+        ClippingWrapperRectangle {
             id: viewWrapper
             required property HyprlandToplevel modelData
-
+            
             property Client client: {
                 let clientComponent = Qt.createComponent("../types/Client.qml")
                 let newClient = clientComponent.createObject();
@@ -36,10 +38,11 @@ Item {
             implicitWidth: adjSize.width
             implicitHeight: adjSize.height
 
+            radius: root.radius
+
             ScreencopyView {
                 captureSource: viewWrapper.modelData.wayland
                 live: true
-                constraintSize: viewWrapper.adjSize
             }
         }
     }
