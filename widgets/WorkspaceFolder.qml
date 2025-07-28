@@ -31,11 +31,12 @@ WrapperRectangle {
                 required property HyprlandToplevel modelData
 
                 Layout.fillWidth: true
-                implicitHeight: width
+                Layout.fillHeight: true
+                // height: implicitWidth
                 margin: 0
 
                 AppImage {
-                    appId: (clientWrapper.modelData.wayland != null) ? clientWrapper.modelData.wayland.appId : ""
+                    appId: (clientWrapper.modelData != null && clientWrapper.modelData.wayland != null) ? clientWrapper.modelData.wayland.appId : ""
                 }
             }
         }

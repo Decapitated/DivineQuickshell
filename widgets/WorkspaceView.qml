@@ -6,43 +6,41 @@ import Quickshell.Hyprland
 import QtQuick
 import QtQuick.Layouts
 
-import "../singletons"
-import "../singletons/clients"
+import "../types"
 
 Item {
     id: root
     property HyprlandWorkspace workspace
 
-    property list<Client> workspaceClients: Clients.clients.filter((client) => client.workspaceId == workspace.id)
-
     Repeater {
-        model: root.workspaceClients
-
-        ScreencopyView {
+        model: root.workspace.toplevels.values.filter((toplevel) => toplevel.toplevel == null)
+        
+        WrapperItem {
             id: viewWrapper
+            required property HyprlandToplevel modelData
 
-            required property Client modelData
-            property HyprlandToplevel toplevel: {
-                const match = root.workspace.toplevels.values.find((top) => {
-                    return `0x${top.address}` == modelData.address
-                });
-                if(match != undefined) {
-                    console.log(JSON.stringify(match.lastIpcObject))
-                }
-                return match ?? null;
+            property Client client: {
+                let clientComponent = Qt.createComponent("../types/Client.qml")
+                let newClient = clientComponent.createObject();
+                newClient.load(modelData.lastIpcObject);
+                return newClient;
             }
 
-            x: (modelData.at.x / root.workspace.monitor.width) * root.width
-            y: (modelData.at.y / root.workspace.monitor.height) * root.height
-            implicitWidth: (modelData.size.width / root.workspace.monitor.width) * root.width
-            implicitHeight: (modelData.size.height / root.workspace.monitor.width) * root.width
-
-            captureSource: viewWrapper.toplevel.wayland
-            live: true
-            constraintSize: Qt.size(
-                (modelData.size.width / root.workspace.monitor.width) * root.width,
-                (modelData.size.height / root.workspace.monitor.width) * root.width
+            property size adjSize: Qt.size(
+                (client.size.width / modelData.monitor.width) * root.width,
+                (client.size.height / modelData.monitor.width) * root.width
             )
+
+            x: (client.at.x / modelData.monitor.width) * root.width
+            y: (client.at.y / modelData.monitor.height) * root.height
+            implicitWidth: adjSize.width
+            implicitHeight: adjSize.height
+
+            ScreencopyView {
+                captureSource: viewWrapper.modelData.wayland
+                live: true
+                constraintSize: viewWrapper.adjSize
+            }
         }
     }
 }

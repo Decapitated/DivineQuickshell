@@ -12,18 +12,18 @@ import "../../widgets"
 RowLayout {
     spacing: 8
     Repeater {
-        model: Hyprland.workspaces
+        model: Hyprland.workspaces.values
 
         WrapperMouseArea {
             id: folderWrapper
             required property HyprlandWorkspace modelData
 
-            property double aspect: modelData.monitor.height / modelData.monitor.width
+            property double aspect: (modelData.monitor) ? modelData.monitor.height / modelData.monitor.width : 9 / 16
 
             hoverEnabled: true
 
             Layout.fillHeight: true
-            implicitWidth: height
+            implicitWidth: implicitHeight
 
             onPressed: {
                 modelData.activate()
@@ -63,6 +63,24 @@ RowLayout {
                     WorkspaceView {
                         workspace: folderWrapper.modelData
                     }
+                }
+            }
+        }
+    }
+
+    Connections {
+        target: Hyprland
+        function onRawEvent(event: HyprlandEvent) {
+            // console.log(event.name)
+            switch(event.name) {
+                case "activewindow":
+                case "fullscreen":
+                case "pin":
+                case "changefloatingmode":
+                case "movewindow":
+                case "openwindow":
+                case "closewindow": {
+                    Hyprland.refreshToplevels();
                 }
             }
         }
