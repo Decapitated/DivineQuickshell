@@ -1,6 +1,6 @@
 import QtQuick
 
-import "../singletons/"
+import "../singletons"
 
 Text {
     text: Time.date

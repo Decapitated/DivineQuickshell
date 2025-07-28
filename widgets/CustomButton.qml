@@ -1,7 +1,7 @@
 import Quickshell.Widgets
 import QtQuick
 
-import "../singletons/"
+import "../singletons"
 
 WrapperMouseArea {
     id: root

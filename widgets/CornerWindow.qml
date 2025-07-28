@@ -1,7 +1,7 @@
 import Quickshell
 import QtQuick
 
-import "../singletons/"
+import "../singletons"
 
 PanelWindow {
     id: root
