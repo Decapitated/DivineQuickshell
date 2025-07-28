@@ -24,9 +24,12 @@ Item {
             required property Client modelData
             property HyprlandToplevel toplevel: {
                 const match = root.workspace.toplevels.values.find((top) => {
-                    return top.address == modelData.address
+                    return `0x${top.address}` == modelData.address
                 });
-                return match;
+                if(match != undefined) {
+                    console.log(JSON.stringify(match.lastIpcObject))
+                }
+                return match ?? null;
             }
 
             x: (modelData.at.x / root.workspace.monitor.width) * root.width
