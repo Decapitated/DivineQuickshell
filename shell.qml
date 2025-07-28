@@ -1,10 +1,16 @@
+pragma ComponentBehavior: Bound
 //@ pragma UseQApplication
 //@ pragma Env QS_NO_RELOAD_POPUP=1
 //@ pragma Env QT_QUICK_CONTROLS_STYLE=Basic
 
 import Quickshell
+import Quickshell.Wayland
+import Quickshell.Widgets
 
-import "./core/"
+import QtQuick
+
+import "core"
+import "singletons"
 
 ShellRoot {
     Scope {
@@ -14,18 +20,11 @@ ShellRoot {
             Scope {
                 id: screenScope
                 required property ShellScreen modelData
+
                 Taskbar {
+                    id: taskbar
                     screen: screenScope.modelData
                 }
-                // Test Window
-                // PanelWindow {
-                //     WlrLayershell.layer: WlrLayer.Bottom
-                //     anchors.left: true
-                //     anchors.right: true
-                //     anchors.top: true
-                //     anchors.bottom: true
-                //     color: "transparent"
-                // }
                 // Screen Corners
                 ScreenCorners {}
             }

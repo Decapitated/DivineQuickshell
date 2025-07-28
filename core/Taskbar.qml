@@ -5,9 +5,9 @@ import QtQuick
 import QtQuick.Layouts
 import Qt5Compat.GraphicalEffects
 
-import "./taskbar/"
-import "../widgets/"
-import "../singletons/"
+import "taskbar"
+import "../widgets"
+import "../singletons"
 
 Scope {
     id: root
@@ -98,11 +98,12 @@ Scope {
                     color: "transparent"
 
                     RowLayout {
-                        // App Selector
+                        // Workspace Selector
                         WrapperItem {
                             Layout.fillHeight: true
-                            margin: 8
-                            AppSelector {}
+                            margin: 4
+                        
+                            WorkspaceSelector {}
                         }
                     }
                 }
@@ -118,8 +119,9 @@ Scope {
                         // System Tray
                         WrapperItem {
                             Layout.fillHeight: true
-                            topMargin: 16
-                            bottomMargin: 16
+
+                            topMargin: 14
+                            bottomMargin: 14
 
                             SystemTray {}
                         }

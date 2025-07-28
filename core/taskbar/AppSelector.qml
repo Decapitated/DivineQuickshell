@@ -7,7 +7,8 @@ import Quickshell.Io
 import QtQuick
 import QtQuick.Layouts
 
-import "../../singletons/"
+import "../../singletons"
+import "../../widgets"
 
 RowLayout {
     spacing: 16
@@ -24,35 +25,20 @@ RowLayout {
             implicitWidth: height
 
             onPressed: {
+                // Move cursor back to original position.
+                // ALERT: To fix, switch to window workspace instead.
                 let backupPos = Cursor.cursorPos
                 modelData.activate()
                 Cursor.moveCursor(backupPos)
             }
 
-            Image {
+            AppImage {
                 id: appImage
-                property DesktopEntry entry: DesktopEntries.byId(imageWrapper.modelData.appId)
-                property string appName: {
-                    if(entry) {
-                        return entry.name;
-                    }
-                    return imageWrapper.modelData.appId;
-                }
-                property string iconName: {
-                    if(entry) {
-                        if(entry.icon.length > 0) {
-                            return entry.icon;
-                        }
-                        return entry.name.toLowerCase().replace(" ", "-");
-                    }
-                    return imageWrapper.modelData.appId.toLowerCase().replace(" ", "-")
-                }
+
+                appId: imageWrapper.modelData.appId
 
                 anchors.fill: parent
-
-                source: Quickshell.iconPath(iconName)
-
-                scale: (imageWrapper.containsMouse) ? 1.25 : 1.0 
+                scale: (imageWrapper.containsMouse) ? 1.25 : 1.0
 
                 Behavior on scale {
                     PropertyAnimation { duration: 100 }
@@ -98,7 +84,7 @@ RowLayout {
 
 
                                 Text {
-                                    text: imageWrapper.modelData.title // appImage.appName
+                                    text: imageWrapper.modelData.title
                                     color: Theme.fontColor
                                     font.pixelSize: 12
                                 }
